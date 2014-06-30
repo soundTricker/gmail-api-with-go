@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <title>Title Page</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name=description content="Gmail API">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <h1 class="text-center">Send Mail with Gmail API</h1>
+    <div class="container">
+      <div class="row">
+        <form action="/sendMail" method="POST" class="form-horizontal" role="form">
+            <div class="form-group">
+              <legend>Mail Setting</legend>
+            </div>
+            <div class="form-group">
+                <label for="to">To</label>
+                <input type="email" name="to" class="form-control" id="to" placeholder="hoge@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" name="subject" class="form-control" id="subject" placeholder="Subject" required>
+            </div>
+            <div class="form-group">
+                <label for="body">Body</label>
+                <textarea name="body" class="form-control" id="body" placeholder="Hi ..." required></textarea>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+        </form>
+      </div>
+    </div>
+    <!-- jQuery -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
