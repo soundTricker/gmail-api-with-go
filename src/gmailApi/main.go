@@ -16,6 +16,8 @@ import (
 	"bytes"
 	"io/ioutil"
 
+	"github.com/alexcesaro/mail/gomail"
+	"fmt"
 )
 
 const (
@@ -107,29 +109,32 @@ func sendMail(w http.ResponseWriter, r *http.Request) {
 		Transport : transport,
 	}
 
-	from, err := mail.ParseAddress(u.Email)
+	msg := gomail.NewCustomMessage("UTF-8", gomail.Base64)
+
+	msg.SetAddressHeader("From", u.Email, "")
+	msg.SetAddressHeader("To", r.FormValue("to"), "")
+	msg.SetHeader("Delivered-To", r.FormValue("to"))
+	msg.SetHeader("Subject", r.FormValue("subject"))
+	msg.SetBody("text/plain", r.FormValue("body"))
+
+	message, err := msg.Export()
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	to, err := mail.ParseAddressList(r.FormValue("to"))
+	h := flattenHeader(message, "")
+	body, err := ioutil.ReadAll(message.Body)
+
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
-	message := &Message {
-		To : to,
-		From : from,
-		Subject: r.FormValue("subject"),
-		Body : []byte(r.FormValue("body")),
-	}
+	c.Debugf(string(append(h, body...)))
 
-	c.Debugf(message.String())
 
-	b, err := json.Marshal(&Raw {Raw : []byte(message.String())})
+	b, err := json.Marshal(&Raw {Raw : append(h, body...)})
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -151,12 +156,27 @@ func sendMail(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	c.Debugf("%v",string(b))
-
-
-	http.Redirect(w,r,"/", http.StatusTemporaryRedirect)
-
+	fmt.Fprintf(w, string(b))
 }
+
+func flattenHeader(msg *mail.Message, bcc string) []byte {
+	var buffer bytes.Buffer
+	for field, value := range msg.Header {
+		if field != "Bcc" {
+			buffer.WriteString(field + ": " + strings.Join(value, ", ") + "\r\n")
+		} else if bcc != "" {
+			for _, to := range value {
+				if strings.Contains(to, bcc) {
+					buffer.WriteString(field + ": " + to + "\r\n")
+				}
+			}
+		}
+	}
+	buffer.WriteString("\r\n")
+
+	return buffer.Bytes()
+}
+
 
 func showIndex(w http.ResponseWriter, r *http.Request) {
 
