@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <title>Title Page</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name=description content="Gmail API">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+<body>
+<h1 class="text-center">Send Mail with Gmail API</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <legend>Gmail Analyzer</legend>
+                </div>
+                <div class="form-group">
+                    <label for="searchText">searchText</label>
+                    <input type="text" name="searchText" class="form-control" id="searchText" required>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button id="analyzeButton" type="button" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery.js"></script>
+<!-- Bootstrap JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<script>
+$("#analyzeButton").click(function(){
+    var $searchText = $("#searchText")
+    if ($searchText.val() == "") {
+        return;
+    }
+
+    $.ajax("/analyzing",{
+        method : "post",
+        data : {"searchText" : $searchText.val()}
+    }).then(function(e){
+        console.log(e);
+    });
+
+});
+
+</script>
+
+</body>
+</html>

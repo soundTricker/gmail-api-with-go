@@ -17,9 +17,23 @@
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-            <form action="/sendMail" method="POST" class="form-horizontal" role="form" target="postBack">
+            <form action="/sendBatch" method="POST" class="form-horizontal" role="form" target="postBack">
                 <div class="form-group">
                     <legend>Mail Setting</legend>
+                </div>
+                <div class="form-group">
+                    <label for="batch">バッチ送信(テスト用)</label>
+                    <div class="checkbox">
+                        <label for="batch">
+                            <input type="checkbox" id="batch" value="on">
+                            バッチ送信する
+                        </label>
+                    </div>
+                    <span class="help-block"><a href="https://developers.google.com/gmail/api/guides/batch">バッチ送信</a></span>
+                </div>
+                <div class="form-group">
+                    <label for="requestCount">Count</label>
+                    <input type="number" name="requestCount" class="form-control" id="requestCount" min="1" max="100" value="1">
                 </div>
                 <div class="form-group">
                     <label for="to">To</label>
@@ -35,7 +49,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
             </form>
@@ -49,6 +63,11 @@
 <script src="//code.jquery.com/jquery.js"></script>
 <!-- Bootstrap JavaScript -->
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<script>
+    
+
+</script>
 
 </body>
 </html>
